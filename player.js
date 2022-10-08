@@ -1,4 +1,4 @@
-import {c, ctx,canvasWidth} from "../main.js";
+import {c, ctx,canvasWidth} from "./main.js";
 import { reExpand } from "./main.js";
 
 var caseWidth = canvasWidth / 20

@@ -8,7 +8,7 @@ c.height = 1000
 
 // IMPORT
 
-import {Case} from "../case.js";
+import {Case} from "./case.js";
 import { Zombie } from "./zombie.js";
 import { Player } from "./player.js";
 
