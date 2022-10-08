@@ -80,19 +80,7 @@ const canvas = document.querySelector('canvas')
 
 
 
-// EXPORT
 
-export {c, ctx,canvasWidth};
-export function reExpand(x,y){
-    for (let i = 0;i<caseArray.length;i++){
-        if (caseArray[i].x == x && caseArray[i].y == y){
-            caseArray[i].score = 0
-        }else {
-            caseArray[i].score = "none"
-        }
-    }
-    expand()
-}
 
 let gameFrame = 0
 zombie = new Zombie(30,30)
@@ -116,3 +104,17 @@ function gameLoop(){
 
 
 gameLoop()
+
+// EXPORT
+
+export {c, ctx,canvasWidth};
+export function reExpand(x,y){
+    for (let i = 0;i<caseArray.length;i++){
+        if (caseArray[i].x == x && caseArray[i].y == y){
+            caseArray[i].score = 0
+        }else {
+            caseArray[i].score = "none"
+        }
+    }
+    expand()
+}
