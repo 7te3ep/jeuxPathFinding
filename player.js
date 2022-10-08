@@ -7,7 +7,7 @@ var zPressed = false
 var sPressed = false
 var qPressed = false
 var dPressed = false
-var audio = new Audio('music.mp3');
+//var audio = new Audio('music.mp3');
 
 window.addEventListener("keydown", function(event) {
     //audio.play();
