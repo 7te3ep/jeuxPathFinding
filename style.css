@@ -1,0 +1,19 @@
+canvas {
+    border:1px solid black;
+    background-color: black;
+    /*zoom: calc(90%);*/
+    max-width: 100%;
+    height: 100vh;
+    aspect-ratio: 1/1;
+}
+
+body {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    border: 0px;
+    padding: 0px;
+    overflow: hidden;
+    align-items: center;
+    justify-content: center;
+}
