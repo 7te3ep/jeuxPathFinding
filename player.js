@@ -10,7 +10,7 @@ var dPressed = false
 var audio = new Audio('music.mp3');
 
 window.addEventListener("keydown", function(event) {
-    audio.play();
+    //audio.play();
     switch(event.key){
         case "z":
             zPressed = true
