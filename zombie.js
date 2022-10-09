@@ -7,7 +7,7 @@ class Zombie {
         this.y = y*20
         this.arrived = false
     }
-    update(caseArray){
+    update(caseArray,zombies){
         var comparatorArray = []
         for (let i = 0;i<caseArray.length;i++){
             if (caseArray[i].x == this.x+20 && caseArray[i].y == this.y ||
@@ -20,10 +20,23 @@ class Zombie {
             }
         }
         comparatorArray.sort((a, b) => (a.score > b.score ? 1 : -1));
-        this.x = comparatorArray[0].x
-        this.y = comparatorArray[0].y
-        if (comparatorArray[0].objective == true){
-            this.arrived = true
+        var caseToGo = true
+        if (comparatorArray.length>=1){
+            for (let i = 0;i<zombies.length;i++){
+                //if (comparatorArray[0].x == zombies[i].x && comparatorArray[0].y == zombies[i].y){
+                //    caseToGo = false
+                //}
+                if (zombies[i].x == comparatorArray[0].x && zombies[i].y == comparatorArray[0].y){
+                    caseToGo = false
+                }
+            }
+            if (caseToGo){
+                    this.x = comparatorArray[0].x
+                    this.y = comparatorArray[0].y
+            }
+            if (comparatorArray[0].objective == true){
+                this.arrived = true
+            }
         }
     }
 

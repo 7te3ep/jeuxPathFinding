@@ -7,10 +7,8 @@ var zPressed = false
 var sPressed = false
 var qPressed = false
 var dPressed = false
-//var audio = new Audio('music.mp3');
 
 window.addEventListener("keydown", function(event) {
-    //audio.play();
     switch(event.key){
         case "z":
             zPressed = true
@@ -48,8 +46,14 @@ class Player {
         this.dx = 0
         this.dy = 0
         this.arrived = false
+        this.particul = []
     }
     update(caseArray){
+        if (this.particul.length >= 6){
+            this.particul.splice(0,2)
+        }
+        this.particul.push(this.x,this.y)
+        //console.log(this.particul)
         this.dx = 0
         this.dy = 0
         if (zPressed){
@@ -84,9 +88,21 @@ class Player {
     }
 
     draw(){
-        ctx.fillStyle = 'green'
+        ctx.fillStyle = 'blue'
         if (this.arrived == false){
             ctx.fillRect(this.x, this.y, 20, 20);
+        }
+        if (this.particul[4] != this.x || this.particul[5] != this.y){
+            ctx.fillStyle = "rgba(0, 0, 255,0.45)"
+            ctx.fillRect(this.particul[4], this.particul[5], 20, 20);
+        }
+        if (this.particul[2] != this.x || this.particul[3] != this.y){
+            ctx.fillStyle = "rgba(0, 0, 255,0.3)"
+            ctx.fillRect(this.particul[2], this.particul[3], 20, 20);
+        }
+        if (this.particul[0] != this.x || this.particul[1] != this.y){
+            ctx.fillStyle = "rgba(0, 0, 255,0.1)"
+            ctx.fillRect(this.particul[0], this.particul[1], 20, 20);
         }
     }
 }

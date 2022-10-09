@@ -18,7 +18,7 @@ import { Player } from "./player.js";
 var caseArray = []
 var canContinu = true
 var i = 0
-var zombie = ""
+var zombie = []
 var player = ""
 var playerSpawnX = 1
 var playerSpawnY = 1
@@ -83,19 +83,33 @@ const canvas = document.querySelector('canvas')
 
 
 let gameFrame = 0
-zombie = new Zombie(30,30)
+zombie.push(new Zombie(30,30)) 
+zombie.push(new Zombie(40,40)) 
+zombie.push(new Zombie(45,45)) 
 function gameLoop(){
+    var spawn = false
     if (gameFrame%1==0){
         ctx.clearRect(0,0,canvas.width,canvas.height)
         caseArray.forEach(function(item){
+            if (gameFrame%100==0 && spawn == false && gameFrame!=0){
+                if (item.score >= 50 && item.score != 100){
+                    zombie.push(new Zombie(item.x/20,item.y/20))
+                    zombie[zombie.length-1].update(caseArray,zombie)
+                    spawn = true
+                }
+            }
             item.draw()
         })
         player.update(caseArray)
         player.draw()
-        zombie.draw()
+        zombie.forEach(function (item){
+            item.draw()
+        })
     }
-    if (gameFrame%8==0){
-        zombie.update(caseArray)
+    if (gameFrame%13==0){
+        zombie.forEach(function (item){
+            item.update(caseArray,zombie)
+        })
     }
     gameFrame ++
         requestAnimationFrame(gameLoop)
