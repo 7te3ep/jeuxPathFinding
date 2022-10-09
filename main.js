@@ -5,12 +5,14 @@ const ctx = c.getContext("2d");
 c.width = 1000
 c.height = 1000
 
+const canvas = document.querySelector('canvas')
 
 // IMPORT
 
 import {Case} from "./case.js";
 import { Zombie } from "./zombie.js";
 import { Player } from "./player.js";
+import { Particle } from "./effects.js";
 
 // MAIN
 
@@ -23,7 +25,13 @@ var player = ""
 var playerSpawnX = 1
 var playerSpawnY = 1
 var canvasWidth = c.width
+var particleArray = []
 var caseWidth = canvasWidth / 50
+
+
+player = new Player(playerSpawnX,playerSpawnY)
+zombie.push(new Zombie(45,45)) 
+
 
 // GENERATION
 
@@ -48,6 +56,23 @@ for (let i = 0; i < c.width/caseWidth;i++){
         }
     }
 }
+// Effect 
+
+function explosionEffect(x,y,color,size){
+        for (let i = 0;i<20;i++){
+            particleArray.push(new Particle(color,size,x,y))
+        }
+}
+
+function handleParticle(){
+    for (let i = 0;i<particleArray.length;i++){
+        particleArray[i].update()
+        particleArray[i].draw()
+        if (particleArray[i].size <=5){
+            particleArray.splice(i,1)
+        }
+    }
+}
 
 
 // EXPAND
@@ -67,52 +92,47 @@ function expand(){
 }
 expand()
 
-player = new Player(playerSpawnX,playerSpawnY)
-player.draw()
-
-caseArray.forEach(function(item){
-    item.draw()
-})
-
-
-
-const canvas = document.querySelector('canvas')
-
-
-
+// GameLoop
 
 
 let gameFrame = 0
-zombie.push(new Zombie(30,30)) 
-zombie.push(new Zombie(40,40)) 
-zombie.push(new Zombie(45,45)) 
 function gameLoop(){
+    
     var spawn = false
-    if (gameFrame%1==0){
-        ctx.clearRect(0,0,canvas.width,canvas.height)
-        caseArray.forEach(function(item){
-            if (gameFrame%100==0 && spawn == false && gameFrame!=0){
-                if (item.score >= 50 && item.score != 100){
-                    zombie.push(new Zombie(item.x/20,item.y/20))
-                    zombie[zombie.length-1].update(caseArray,zombie)
-                    spawn = true
-                }
+    ctx.clearRect(0,0,canvas.width,canvas.height)
+
+    // spawn Zombie and draw Case
+    caseArray.forEach(function(item){
+        if (gameFrame%80==0 && spawn == false && gameFrame!=0){
+            if (item.score >= 50 && item.score != 100){
+                zombie.push(new Zombie(item.x/20,item.y/20))
+                zombie[zombie.length-1].update(caseArray,zombie)
+                spawn = true
             }
-            item.draw()
-        })
-        player.update(caseArray)
-        player.draw()
-        zombie.forEach(function (item){
-            item.draw()
-        })
+        }
+        item.draw()
+    })
+    
+    // update player
+    player.update(caseArray)
+    player.draw()
+
+    // handle zombies
+    for (let i = 0;i<zombie.length;i++){
+        zombie[i].draw()
+        if (zombie[i].x == player.x && zombie[i].y == player.y ){
+            zombie.splice(i,1)
+            explosionEffect(player.x+5,player.y+5,"lightgreen",15)
+        }
+        if (gameFrame%13==0){
+            zombie[i].update(caseArray,zombie)
+        }
     }
-    if (gameFrame%13==0){
-        zombie.forEach(function (item){
-            item.update(caseArray,zombie)
-        })
-    }
+
+    // particle
+    handleParticle()
     gameFrame ++
-        requestAnimationFrame(gameLoop)
+    requestAnimationFrame(gameLoop)
 }
 
 
@@ -131,4 +151,6 @@ export function reExpand(x,y){
         }
     }
     expand()
-}
+
+
+    }

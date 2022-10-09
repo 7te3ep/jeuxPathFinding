@@ -3,7 +3,7 @@ canvas {
     background-color: black;
     /*zoom: calc(90%);*/
     max-width: 100%;
-    height: 100vh;
+    height: 95vh;
     aspect-ratio: 1/1;
 }
 

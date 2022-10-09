@@ -49,29 +49,36 @@ class Player {
         this.particul = []
     }
     update(caseArray){
-        if (this.particul.length >= 6){
+        if (this.particul.length >= 15){
             this.particul.splice(0,2)
         }
         this.particul.push(this.x,this.y)
-        //console.log(this.particul)
         this.dx = 0
         this.dy = 0
         if (zPressed){
-            this.dx = 0
-            this.dy = -1
-            reExpand(this.x,this.y)
+            if (this.y != 0){
+                this.dx = 0
+                this.dy = -1
+                reExpand(this.x+(this.dx*20),this.y+(this.dy*20))
+            }
         } else if(sPressed){
+            if (this.y != 980){
             this.dx = 0
             this.dy = 1
-            reExpand(this.x,this.y)
+            reExpand(this.x+(this.dx*20),this.y+(this.dy*20))
+            }
         }else if(qPressed){
+            if (this.x != 0){
             this.dy = 0
             this.dx = -1
-            reExpand(this.x,this.y)
+            reExpand(this.x+(this.dx*20),this.y+(this.dy*20))
+            }
         }else if(dPressed){
+            if (this.x != 980){
             this.dy = 0
             this.dx = 1
-            reExpand(this.x,this.y)
+            reExpand(this.x+(this.dx*20),this.y+(this.dy*20))
+            }
         }
         var one = false
         for (let i = 0;i<caseArray.length;i++){
@@ -81,33 +88,29 @@ class Player {
                 one = true
             }
         }
-        sPressed = false
-        zPressed = false
-        qPressed = false
-        dPressed = false
+        //sPressed = false
+        //zPressed = false
+        //qPressed = false
+        //dPressed = false
     }
 
     draw(){
-        ctx.fillStyle = 'blue'
+        ctx.fillStyle = 'rgb(144, 0, 255)'
         if (this.arrived == false){
             ctx.fillRect(this.x, this.y, 20, 20);
         }
-        if (this.particul[4] != this.x || this.particul[5] != this.y){
-            ctx.fillStyle = "rgba(0, 0, 255,0.45)"
-            ctx.fillRect(this.particul[4], this.particul[5], 20, 20);
-        }
-        if (this.particul[2] != this.x || this.particul[3] != this.y){
-            ctx.fillStyle = "rgba(0, 0, 255,0.3)"
-            ctx.fillRect(this.particul[2], this.particul[3], 20, 20);
-        }
-        if (this.particul[0] != this.x || this.particul[1] != this.y){
-            ctx.fillStyle = "rgba(0, 0, 255,0.1)"
-            ctx.fillRect(this.particul[0], this.particul[1], 20, 20);
+        for (let i = 0;i<this.particul.length;i+=2){
+            if (this.particul[i] != this.x || this.particul[i+1] != this.y){
+                var opacity = 0+i/10
+                var color = "rgba(137, 43, 226,"+opacity+")"
+                ctx.fillStyle = color
+                ctx.fillRect(this.particul[i], this.particul[i+1], 20, 20);
+            }
         }
     }
 }
 
-
+//rgba(137, 43, 226
 
 
 export {Player};

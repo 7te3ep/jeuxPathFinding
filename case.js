@@ -32,6 +32,7 @@ class Case {
         }
         if (this.block || this.score == "none"){
             ctx.fillStyle = 'black'
+            this.block = true
         }
         ctx.fillRect(this.x, this.y, 20, 20);
         ctx.font = "bold 8px arial";

@@ -5,7 +5,6 @@ class Zombie {
     constructor(x,y){
         this.x = x*20
         this.y = y*20
-        this.arrived = false
     }
     update(caseArray,zombies){
         var comparatorArray = []
@@ -14,7 +13,7 @@ class Zombie {
                 caseArray[i].x == this.x-20 && caseArray[i].y == this.y ||
                 caseArray[i].y == this.y+20 && caseArray[i].x == this.x ||
                 caseArray[i].y == this.y-20 && caseArray[i].x == this.x){
-                    if (caseArray[i].block == false && this.arrived == false){
+                    if (caseArray[i].block == false){
                         comparatorArray.push(caseArray[i])
                     }
             }
@@ -34,17 +33,12 @@ class Zombie {
                     this.x = comparatorArray[0].x
                     this.y = comparatorArray[0].y
             }
-            if (comparatorArray[0].objective == true){
-                this.arrived = true
-            }
         }
     }
 
     draw(){
-        ctx.fillStyle = 'rgba(255, 255, 0, 0.5)'
-        if (this.arrived == false){
-            ctx.fillRect(this.x, this.y, 20, 20);
-        }
+        ctx.fillStyle = 'lightgreen'
+        ctx.fillRect(this.x, this.y, 20, 20);
     }
 }
 
