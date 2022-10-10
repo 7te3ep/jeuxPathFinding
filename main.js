@@ -56,6 +56,16 @@ for (let i = 0; i < c.width/caseWidth;i++){
         }
     }
 }
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
+
+
+
 // Effect 
 
 function explosionEffect(x,y,color,size){
@@ -63,6 +73,13 @@ function explosionEffect(x,y,color,size){
             particleArray.push(new Particle(color,size,x,y))
         }
 }
+
+function collisionEffect(x,y,color,size){
+    for (let i = 0;i<10;i++){
+        particleArray.push(new Particle(color,size,x,y))
+    }
+}
+
 
 function handleParticle(){
     for (let i = 0;i<particleArray.length;i++){
@@ -96,17 +113,17 @@ expand()
 
 
 let gameFrame = 0
-function gameLoop(){
+let gameloop = setInterval(function(){
     
     var spawn = false
     ctx.clearRect(0,0,canvas.width,canvas.height)
+    //shuffleArray(caseArray)
 
     // spawn Zombie and draw Case
     caseArray.forEach(function(item){
         if (gameFrame%80==0 && spawn == false && gameFrame!=0){
             if (item.score >= 50 && item.score != 100){
                 zombie.push(new Zombie(item.x/20,item.y/20))
-                zombie[zombie.length-1].update(caseArray,zombie)
                 spawn = true
             }
         }
@@ -115,9 +132,13 @@ function gameLoop(){
     
     // update player
     player.update(caseArray)
+    if (player.collision == false){
+        collisionEffect(player.x+5,player.y+5,"rgba(144, 0, 255,0.8)",10)
+    }
     player.draw()
 
     // handle zombies
+    
     for (let i = 0;i<zombie.length;i++){
         zombie[i].draw()
         if (zombie[i].x == player.x && zombie[i].y == player.y ){
@@ -125,25 +146,28 @@ function gameLoop(){
             explosionEffect(player.x+5,player.y+5,"lightgreen",15)
         }
         if (gameFrame%13==0){
+            console.log('i')
             zombie[i].update(caseArray,zombie)
         }
     }
 
     // particle
+    if (particleArray.length!=0){
     handleParticle()
+    }
     gameFrame ++
-    requestAnimationFrame(gameLoop)
-}
+},50) 
 
 
 
-gameLoop()
+gameloop
 
 // EXPORT
 
 export {c, ctx,canvasWidth};
 export function reExpand(x,y){
-    for (let i = 0;i<caseArray.length;i++){
+    var len = caseArray.length
+    for (let i = 0;i<len;i++){
         if (caseArray[i].x == x && caseArray[i].y == y){
             caseArray[i].score = 0
         }else {
@@ -151,6 +175,4 @@ export function reExpand(x,y){
         }
     }
     expand()
-
-
     }

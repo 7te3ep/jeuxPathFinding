@@ -1,5 +1,4 @@
 import {c, ctx,canvasWidth} from "./main.js";
-var caseWidth = canvasWidth / 20
 
 class Zombie {
     constructor(x,y){
@@ -8,7 +7,8 @@ class Zombie {
     }
     update(caseArray,zombies){
         var comparatorArray = []
-        for (let i = 0;i<caseArray.length;i++){
+        var len = caseArray.length
+        for (let i = 0;i<len;i++){
             if (caseArray[i].x == this.x+20 && caseArray[i].y == this.y ||
                 caseArray[i].x == this.x-20 && caseArray[i].y == this.y ||
                 caseArray[i].y == this.y+20 && caseArray[i].x == this.x ||
@@ -22,9 +22,6 @@ class Zombie {
         var caseToGo = true
         if (comparatorArray.length>=1){
             for (let i = 0;i<zombies.length;i++){
-                //if (comparatorArray[0].x == zombies[i].x && comparatorArray[0].y == zombies[i].y){
-                //    caseToGo = false
-                //}
                 if (zombies[i].x == comparatorArray[0].x && zombies[i].y == comparatorArray[0].y){
                     caseToGo = false
                 }

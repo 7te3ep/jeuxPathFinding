@@ -1,12 +1,11 @@
 import {c, ctx,canvasWidth} from "./main.js";
 import { reExpand } from "./main.js";
 
-var caseWidth = canvasWidth / 20
-
 var zPressed = false
 var sPressed = false
 var qPressed = false
 var dPressed = false
+var len = ""
 
 window.addEventListener("keydown", function(event) {
     switch(event.key){
@@ -45,10 +44,11 @@ class Player {
         this.y = y*20
         this.dx = 0
         this.dy = 0
-        this.arrived = false
         this.particul = []
+        this.collision = false
     }
     update(caseArray){
+        this.collision = false
         if (this.particul.length >= 15){
             this.particul.splice(0,2)
         }
@@ -81,25 +81,27 @@ class Player {
             }
         }
         var one = false
-        for (let i = 0;i<caseArray.length;i++){
-            if (caseArray[i].x == this.x+(this.dx*20) && caseArray[i].y == this.y+(this.dy*20) && caseArray[i].block == false && one == false){
-                this.x = this.x+(this.dx*20)
-                this.y = this.y+(this.dy*20)
-                one = true
+        var len = caseArray.length
+        for (let i = 0;i<len;i++){
+            if (caseArray[i].x == this.x+(this.dx*20) && caseArray[i].y == this.y+(this.dy*20) && one == false){
+                if (caseArray[i].block == false){
+                    this.x = this.x+(this.dx*20)
+                    this.y = this.y+(this.dy*20)
+                    one = true
+                }else {
+                    if (this.collision == false){
+                        this.collision = true
+                    }
+                }
             }
         }
-        //sPressed = false
-        //zPressed = false
-        //qPressed = false
-        //dPressed = false
     }
 
     draw(){
         ctx.fillStyle = 'rgb(144, 0, 255)'
-        if (this.arrived == false){
-            ctx.fillRect(this.x, this.y, 20, 20);
-        }
-        for (let i = 0;i<this.particul.length;i+=2){
+        ctx.fillRect(this.x, this.y, 20, 20);
+        len = this.particul.length
+        for (let i = 0;i<len;i+=2){
             if (this.particul[i] != this.x || this.particul[i+1] != this.y){
                 var opacity = 0+i/10
                 var color = "rgba(137, 43, 226,"+opacity+")"

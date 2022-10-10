@@ -1,5 +1,4 @@
 import {c, ctx,canvasWidth} from "./main.js";
-var caseWidth = canvasWidth / 20
 
 class Particle {
     constructor(color,size,x,y){

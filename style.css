@@ -5,6 +5,8 @@ canvas {
     max-width: 100%;
     height: 95vh;
     aspect-ratio: 1/1;
+    color: rgb(144, 0, 255);
+    color: rgb(39, 153, 31);
 }
 
 body {

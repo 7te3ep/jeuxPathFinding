@@ -26,23 +26,24 @@ class Case {
     }
 
     draw(){
-        ctx.fillStyle = 'grey'
+        ctx.fillStyle = 'black'
         if (this.objective){
             ctx.fillStyle = 'red'
         }
         if (this.block || this.score == "none"){
-            ctx.fillStyle = 'black'
+            ctx.fillStyle = 'grey'
             this.block = true
         }
-        ctx.fillRect(this.x, this.y, 20, 20);
-        ctx.font = "bold 8px arial";
-        ctx.fillStyle = "rgba(0, 0, 0, 0.4)";
         if (this.block){
             this.score = 100
         }
-        if (this.score != "none" ||this.score != 100 ){
-            ctx.fillText(`${this.score}`, this.x+8,this.y+12);
-        }
+        ctx.fillRect(this.x, this.y, 20, 20);
+
+        //ctx.font = "bold 8px arial";
+        //ctx.fillStyle = "rgba(0, 0, 0, 0.4)";
+        //if (this.score != "none" ||this.score != 100 ){
+        //    ctx.fillText(`${this.score}`, this.x+8,this.y+12);
+        //}
     }
 }
 
