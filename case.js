@@ -1,5 +1,4 @@
 import {c, ctx,canvasWidth} from "./main.js";
-var caseWidth = canvasWidth / 20
 class Case {
     constructor(x,y,block,score){
         this.x = x
@@ -40,7 +39,7 @@ class Case {
         ctx.fillRect(this.x, this.y, 20, 20);
 
         //ctx.font = "bold 8px arial";
-        //ctx.fillStyle = "rgba(0, 0, 0, 0.4)";
+        //ctx.fillStyle = "white";
         //if (this.score != "none" ||this.score != 100 ){
         //    ctx.fillText(`${this.score}`, this.x+8,this.y+12);
         //}

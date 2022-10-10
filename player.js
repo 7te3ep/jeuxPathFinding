@@ -39,7 +39,8 @@ window.addEventListener("keydown", function(event) {
 
 
 class Player {
-    constructor(x,y){
+    constructor(x,y,life){
+        this.life = life
         this.x = x*20
         this.y = y*20
         this.dx = 0
@@ -49,7 +50,7 @@ class Player {
     }
     update(caseArray){
         this.collision = false
-        if (this.particul.length >= 15){
+        while (this.particul.length >= 15){
             this.particul.splice(0,2)
         }
         this.particul.push(this.x,this.y)
@@ -59,25 +60,21 @@ class Player {
             if (this.y != 0){
                 this.dx = 0
                 this.dy = -1
-                reExpand(this.x+(this.dx*20),this.y+(this.dy*20))
             }
         } else if(sPressed){
             if (this.y != 980){
-            this.dx = 0
-            this.dy = 1
-            reExpand(this.x+(this.dx*20),this.y+(this.dy*20))
+                this.dx = 0
+                this.dy = 1
             }
         }else if(qPressed){
             if (this.x != 0){
-            this.dy = 0
-            this.dx = -1
-            reExpand(this.x+(this.dx*20),this.y+(this.dy*20))
+                this.dy = 0
+                this.dx = -1
             }
         }else if(dPressed){
             if (this.x != 980){
-            this.dy = 0
-            this.dx = 1
-            reExpand(this.x+(this.dx*20),this.y+(this.dy*20))
+                this.dy = 0
+                this.dx = 1
             }
         }
         var one = false
@@ -87,7 +84,9 @@ class Player {
                 if (caseArray[i].block == false){
                     this.x = this.x+(this.dx*20)
                     this.y = this.y+(this.dy*20)
+                    reExpand(this.x,this.y)
                     one = true
+                    break
                 }else {
                     if (this.collision == false){
                         this.collision = true
@@ -103,7 +102,7 @@ class Player {
         len = this.particul.length
         for (let i = 0;i<len;i+=2){
             if (this.particul[i] != this.x || this.particul[i+1] != this.y){
-                var opacity = 0+i/10
+                var opacity = 0+i/15
                 var color = "rgba(137, 43, 226,"+opacity+")"
                 ctx.fillStyle = color
                 ctx.fillRect(this.particul[i], this.particul[i+1], 20, 20);
