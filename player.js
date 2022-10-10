@@ -105,7 +105,8 @@ class Player {
     }
 
     draw(){
-        ctx.fillStyle = 'rgb(144, 0, 255)'
+        console.log(1-(this.life/10))
+        ctx.fillStyle = 'rgba(144, 0, 255,'+0+(this.life/10)+')'
         ctx.fillRect(this.x, this.y, 20, 20);
         len = this.particul.length
         for (let i = 0;i<len;i+=2){

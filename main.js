@@ -29,7 +29,7 @@ var particleArray = []
 var caseWidth = canvasWidth / 50
 
 
-player = new Player(playerSpawnX,playerSpawnY,20)
+player = new Player(playerSpawnX,playerSpawnY,10)
 zombie.push(new Zombie(45,45)) 
 
 
@@ -133,7 +133,7 @@ let gameloop = setInterval(function(){
     // update player
     player.update(caseArray)
     if (player.collision == false){
-        collisionEffect(player.x+5,player.y+5,"rgba(144, 0, 255,"+player.life/18+")",12)
+        collisionEffect(player.x+5,player.y+5,"rgba(144, 0, 255,0.8)",12)
     }
     player.draw()
 
@@ -144,7 +144,7 @@ let gameloop = setInterval(function(){
         // check player collision
         if (zombie[i].x == player.x && zombie[i].y == player.y ){
             if (player.collision == true){
-                player.life -= 2
+                player.life -= 1
             }
             zombie.splice(i,1)
             if (player.collision == false){
