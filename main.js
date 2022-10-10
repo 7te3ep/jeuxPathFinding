@@ -147,7 +147,9 @@ let gameloop = setInterval(function(){
                 player.life -= 2
             }
             zombie.splice(i,1)
-            explosionEffect(player.x+5,player.y+5,"lightgreen",15)
+            if (player.collision == false){
+                explosionEffect(player.x+5,player.y+5,"lightgreen",15)
+            }
         }
         if (gameFrame%5==0){
             zombie[i].update(caseArray,zombie)
