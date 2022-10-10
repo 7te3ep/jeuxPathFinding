@@ -60,21 +60,29 @@ class Player {
             if (this.y != 0){
                 this.dx = 0
                 this.dy = -1
+            }else {
+                this.collision = true
             }
         } else if(sPressed){
             if (this.y != 980){
                 this.dx = 0
                 this.dy = 1
+            }else {
+                this.collision = true
             }
         }else if(qPressed){
             if (this.x != 0){
                 this.dy = 0
                 this.dx = -1
+            }else {
+                this.collision = true
             }
         }else if(dPressed){
             if (this.x != 980){
                 this.dy = 0
                 this.dx = 1
+            }else {
+                this.collision = true
             }
         }
         var one = false
