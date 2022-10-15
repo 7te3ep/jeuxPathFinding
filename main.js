@@ -1,6 +1,8 @@
 // CANVAS
 
 const c = document.getElementById("canva");
+var lifeBar = document.getElementById("progressBar");
+var score = document.getElementById("scoreBox");
 const ctx = c.getContext("2d");
 c.width = 1000
 c.height = 1000
@@ -20,24 +22,25 @@ import { Particle } from "./effects.js";
 var caseArray = []
 var canContinu = true
 var i = 0
+var newScore = 0
 var zombie = []
 var player = ""
-var playerSpawnX = 1
-var playerSpawnY = 1
+var playerSpawnX = 9
+var playerSpawnY = 9
 var canvasWidth = c.width
 var particleArray = []
-var caseWidth = canvasWidth / 50
+var caseWidth = canvasWidth / 20
 
 
-player = new Player(playerSpawnX,playerSpawnY,10)
-zombie.push(new Zombie(45,45)) 
+player = new Player(playerSpawnX,playerSpawnY,100)
+zombie.push(new Zombie(25,25)) 
 
 
 // GENERATION
 
-for (let i = 0; i < c.width/caseWidth;i++){
-    for (let g = 0; g <c.width/caseWidth;g++){
-        if (Math.random() <=0.25){
+for (let i = 0; i < 50;i++){
+    for (let g = 0; g <50;g++){
+        if (Math.random() <=0.15 || g == 0 || i == 0 || g == 40 || i == 40){
             if( i != playerSpawnX || g != playerSpawnY){
                 caseArray.push(new Case(i*caseWidth,g*caseWidth,true,"none"))
             }else {
@@ -49,7 +52,7 @@ for (let i = 0; i < c.width/caseWidth;i++){
             }
         }else{
             if (i == playerSpawnX && g == playerSpawnY){
-                caseArray.push(new Case(i*caseWidth,g*caseWidth,true,0))
+                caseArray.push(new Case(i*caseWidth,g*caseWidth,false,0))
             }else{
                 caseArray.push(new Case(i*caseWidth,g*caseWidth,false,"none"))
             }
@@ -69,13 +72,13 @@ function shuffleArray(array) {
 // Effect 
 
 function explosionEffect(x,y,color,size){
-        for (let i = 0;i<20;i++){
+        for (let i = 0;i<4;i++){
             particleArray.push(new Particle(color,size,x,y))
         }
 }
 
 function collisionEffect(x,y,color,size){
-    for (let i = 0;i<5;i++){
+    for (let i = 0;i<2;i++){
         particleArray.push(new Particle(color,size,x,y))
     }
 }
@@ -84,8 +87,8 @@ function collisionEffect(x,y,color,size){
 function handleParticle(){
     for (let i = 0;i<particleArray.length;i++){
         particleArray[i].update()
-        particleArray[i].draw()
-        if (particleArray[i].size <=5){
+        particleArray[i].draw(player.caseDx,player.caseDy)
+        if (particleArray[i].size <=10){
             particleArray.splice(i,1)
         }
     }
@@ -123,36 +126,42 @@ let gameloop = setInterval(function(){
     caseArray.forEach(function(item){
         if (gameFrame%50==0 && spawn == false && gameFrame!=0){
             if (item.score >= 50 && item.score != 100){
-                zombie.push(new Zombie(item.x/20,item.y/20))
+                zombie.push(new Zombie(item.x/50,item.y/50))
                 spawn = true
             }
         }
-        item.draw()
+        if (item.x <= player.x+1 && item.x <= player.x|| item.x >= player.x-1 && item.x >= player.x){
+            if (item.y <= player.y+1 && item.y <= player.y|| item.y >= player.y-1 && item.y >= player.y){
+            item.draw(player.caseDx,player.caseDy)
+        }}
     })
     
     // update player
-    player.update(caseArray)
+    player.update(caseArray,gameFrame)
     if (player.collision == false){
-        collisionEffect(player.x+5,player.y+5,"rgba(144, 0, 255,0.8)",12)
+        collisionEffect(player.x+5,player.y+5,"rgba(144, 0, 255,0.8)",50)
     }
     player.draw()
 
     // handle zombies
     
     for (let i = 0;i<zombie.length;i++){
-        zombie[i].draw()
+        if (gameFrame%5==0){
+            zombie[i].update(caseArray,zombie)
+        }
+        zombie[i].draw(player.caseDx,player.caseDy)
         // check player collision
         if (zombie[i].x == player.x && zombie[i].y == player.y ){
             if (player.collision == true){
-                player.life -= 1
+                player.life -= 10
+                lifeBar.style.width = player.life + "%"
             }
             zombie.splice(i,1)
             if (player.collision == false){
-                explosionEffect(player.x+5,player.y+5,"lightgreen",15)
+                newScore = newScore +1
+                score.innerHTML = newScore
+                explosionEffect(player.x+5,player.y+5,"rgb(144, 238, 144,0.6)",100)
             }
-        }
-        if (gameFrame%5==0){
-            zombie[i].update(caseArray,zombie)
         }
     }
 
@@ -164,14 +173,13 @@ let gameloop = setInterval(function(){
     if (player.life <= 0){
         clearInterval(gameloop)
     }
-},50) 
+},20) 
 
 
 
 gameloop
 
 // EXPORT
-
 export {c, ctx,canvasWidth};
 export function reExpand(x,y){
     var len = caseArray.length

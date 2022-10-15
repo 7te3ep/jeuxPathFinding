@@ -41,82 +41,68 @@ window.addEventListener("keydown", function(event) {
 class Player {
     constructor(x,y,life){
         this.life = life
-        this.x = x*20
-        this.y = y*20
+        this.x = x*50
+        this.y = y*50
         this.dx = 0
         this.dy = 0
         this.particul = []
         this.collision = false
+        this.caseDx = ""
+        this.caseDy = ""
+        this.posX =""
+        this.posY =""
     }
-    update(caseArray){
+    update(caseArray,gameFrame){
         this.collision = false
-        while (this.particul.length >= 15){
-            this.particul.splice(0,2)
-        }
-        this.particul.push(this.x,this.y)
         this.dx = 0
         this.dy = 0
         if (zPressed){
-            if (this.y != 0){
                 this.dx = 0
                 this.dy = -1
-            }else {
-                this.collision = true
-            }
         } else if(sPressed){
-            if (this.y != 980){
                 this.dx = 0
                 this.dy = 1
-            }else {
-                this.collision = true
-            }
         }else if(qPressed){
-            if (this.x != 0){
                 this.dy = 0
                 this.dx = -1
-            }else {
-                this.collision = true
-            }
         }else if(dPressed){
-            if (this.x != 980){
                 this.dy = 0
                 this.dx = 1
-            }else {
-                this.collision = true
-            }
         }
         var one = false
         var len = caseArray.length
+        if(gameFrame % 2 == 0){
+            reExpand(this.x,this.y)
+        }
+        // get case to go and case where you are
         for (let i = 0;i<len;i++){
-            if (caseArray[i].x == this.x+(this.dx*20) && caseArray[i].y == this.y+(this.dy*20) && one == false){
+            if (caseArray[i].x == this.x && caseArray[i].y == this.y){
+                this.posX = caseArray[i].x
+                this.posY = caseArray[i].y
+            }
+            if (caseArray[i].x == this.x+(this.dx*50) && caseArray[i].y == this.y+(this.dy*50) && one == false){
                 if (caseArray[i].block == false){
-                    this.x = this.x+(this.dx*20)
-                    this.y = this.y+(this.dy*20)
-                    reExpand(this.x,this.y)
+                    this.caseDx = this.dx
+                    this.caseDy = this.dy
                     one = true
                     break
                 }else {
                     if (this.collision == false){
+                        this.caseDx = 0
+                        this.caseDy = 0
                         this.collision = true
                     }
                 }
+            }else {
+                this.caseDx = 0
+                this.caseDy = 0
             }
         }
     }
 
     draw(){
-        console.log(1-(this.life/10))
-        ctx.fillStyle = 'rgba(144, 0, 255,'+0+(this.life/10)+')'
-        ctx.fillRect(this.x, this.y, 20, 20);
-        len = this.particul.length
-        for (let i = 0;i<len;i+=2){
-            if (this.particul[i] != this.x || this.particul[i+1] != this.y){
-                var opacity = 0+i/15
-                var color = "rgba(137, 43, 226,"+opacity+")"
-                ctx.fillStyle = color
-                ctx.fillRect(this.particul[i], this.particul[i+1], 20, 20);
-            }
-        }
+        ctx.fillStyle = 'rgb(144, 0, 255)'
+        ctx.fillRect(this.x, this.y, 50, 50);
     }
 }
 

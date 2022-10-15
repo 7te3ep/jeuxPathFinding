@@ -2,17 +2,17 @@ import {c, ctx,canvasWidth} from "./main.js";
 
 class Zombie {
     constructor(x,y){
-        this.x = x*20
-        this.y = y*20
+        this.x = x*50
+        this.y = y*50
     }
     update(caseArray,zombies){
         var comparatorArray = []
         var len = caseArray.length
         for (let i = 0;i<len;i++){
-            if (caseArray[i].x == this.x+20 && caseArray[i].y == this.y ||
-                caseArray[i].x == this.x-20 && caseArray[i].y == this.y ||
-                caseArray[i].y == this.y+20 && caseArray[i].x == this.x ||
-                caseArray[i].y == this.y-20 && caseArray[i].x == this.x){
+            if (caseArray[i].x == this.x+50 && caseArray[i].y == this.y ||
+                caseArray[i].x == this.x-50 && caseArray[i].y == this.y ||
+                caseArray[i].y == this.y+50 && caseArray[i].x == this.x ||
+                caseArray[i].y == this.y-50 && caseArray[i].x == this.x){
                     if (caseArray[i].block == false){
                         comparatorArray.push(caseArray[i])
                     }
@@ -33,9 +33,13 @@ class Zombie {
         }
     }
 
-    draw(){
+    draw(dx,dy){
+        dx = dx*-1
+        dy = dy*-1
+        this.x = this.x+(dx*50)
+        this.y = this.y+(dy*50)
         ctx.fillStyle = 'lightgreen'
-        ctx.fillRect(this.x, this.y, 20, 20);
+        ctx.fillRect(this.x, this.y, 50, 50);
     }
 }
 

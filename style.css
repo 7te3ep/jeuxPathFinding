@@ -1,15 +1,15 @@
 canvas {
-    border:1px solid black;
-    background-color: black;
+    background-color: grey;
     /*zoom: calc(90%);*/
     max-width: 100%;
-    height: 95vh;
+    height: 90vh;
     aspect-ratio: 1/1;
-    color: rgb(144, 0, 255);
-    color: rgb(39, 153, 31);
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
+    border-radius: 30px;
 }
 
 body {
+    margin-top: 30px;
     height: 100vh;
     width: 100vw;
     display: flex;
@@ -18,4 +18,45 @@ body {
     overflow: hidden;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
+}
+
+#barContainer {
+    position: absolute;
+    width: 250px;
+    height: 30px;
+    bottom: 3.5%;
+    background-color: rgb(186, 186, 186);
+    border-radius: 40px;
+    padding: 10px 15px;
+    box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.2);
+    border: 5px solid white;
+}
+
+#progressBar {
+    height: 100%;
+    width: 100%;
+    border-radius: 10px;
+    background-color: red;
+    transition: all 0.3s ease-in;
+}
+
+#scoreBox {
+    box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.2);
+    position: relative;
+    width: 70px;
+    height: 200px;
+    transform: translate(-300px,-50px);
+    border: 5px solid white;
+    background-color: rgb(186, 186, 186);
+    border-radius: 30px;
+    padding: 20px;    
+    font-size: 40px;
+    font-weight: bolder;
+    font-family:Arial, Helvetica, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    color: rgb(70, 0, 123);
 }

@@ -6,16 +6,20 @@ class Particle {
         this.y = y
         this.color = color
         this.size = Math.random() * size  - 1.5
-        this.speedX = Math.random() * 5 - 1.5;
-        this.speedY = Math.random() * 5 - 1.5;
+        this.speedX = Math.random() * 8 - 1.5;
+        this.speedY = Math.random() * 8 - 1.5;
     }
     update(){
         this.x += this.speedX;
         this.y += this.speedY;
-        if (this.size > 5) this.size -= this.size/30;
+        if (this.size > 5) this.size -= this.size/15;
     }
 
-    draw(){
+    draw(dx,dy){
+        dx = dx*-1
+        dy = dy*-1
+        this.x = this.x+(dx*50)
+        this.y = this.y+(dy*50)
         ctx.fillStyle = this.color
         ctx.fillRect(this.x, this.y, this.size, this.size);
     }
