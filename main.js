@@ -33,7 +33,6 @@ var caseWidth = canvasWidth / 20
 
 
 player = new Player(playerSpawnX,playerSpawnY,100)
-zombie.push(new Zombie(25,25)) 
 
 
 // GENERATION
@@ -71,27 +70,35 @@ function shuffleArray(array) {
 
 // Effect 
 
-function explosionEffect(x,y,color,size){
+function explosionEffect(x,y,color,size,speedX,speedY){
         for (let i = 0;i<4;i++){
-            particleArray.push(new Particle(color,size,x,y))
+            particleArray.push(new Particle(color,size,x,y,speedX,speedY))
         }
 }
 
-function collisionEffect(x,y,color,size){
+function collisionEffect(x,y,color,size,speedX,speedY){
     for (let i = 0;i<2;i++){
-        particleArray.push(new Particle(color,size,x,y))
+        particleArray.push(new Particle(color,size,x,y,speedX,speedY))
     }
 }
 
+function zombieBack(x,y,color,size,speedX,speedY){
+    for (let i = 0;i<1;i++){
+        particleArray.push(new Particle(color,size,x,y,speedX,speedY))
+    }
+}
 
 function handleParticle(){
-    for (let i = 0;i<particleArray.length;i++){
-        particleArray[i].update()
-        particleArray[i].draw(player.caseDx,player.caseDy)
-        if (particleArray[i].size <=10){
-            particleArray.splice(i,1)
+    if (particleArray.length!=0){
+        for (let i = 0;i<particleArray.length;i++){
+            particleArray[i].draw(player.caseDx,player.caseDy)
+            particleArray[i].update()
+            if (particleArray[i].size <=10){
+                particleArray.splice(i,1)
+            }
         }
     }
+
 }
 
 
@@ -122,6 +129,7 @@ let gameloop = setInterval(function(){
     ctx.clearRect(0,0,canvas.width,canvas.height)
     //shuffleArray(caseArray)
 
+
     // spawn Zombie and draw Case
     caseArray.forEach(function(item){
         if (gameFrame%50==0 && spawn == false && gameFrame!=0){
@@ -135,40 +143,41 @@ let gameloop = setInterval(function(){
             item.draw(player.caseDx,player.caseDy)
         }}
     })
+
+    // handle Particle
+        handleParticle()
     
     // update player
     player.update(caseArray,gameFrame)
     if (player.collision == false){
-        collisionEffect(player.x+5,player.y+5,"rgba(144, 0, 255,0.8)",50)
+        collisionEffect(player.x+5,player.y+5,"rgba(144, 0, 255,0.8)",50,1,1)
     }
     player.draw()
 
     // handle zombies
     
     for (let i = 0;i<zombie.length;i++){
-        if (gameFrame%5==0){
+        if (gameFrame%10==0){
+            zombieBack(zombie[i].x,zombie[i].y,"rgba(0, 128, 0,0.6)",50,0,0)
             zombie[i].update(caseArray,zombie)
         }
-        zombie[i].draw(player.caseDx,player.caseDy)
+        zombie[i].draw(player.caseDx,player.caseDy,gameFrame)
         // check player collision
         if (zombie[i].x == player.x && zombie[i].y == player.y ){
             if (player.collision == true){
                 player.life -= 10
                 lifeBar.style.width = player.life + "%"
             }
+            console.log("aha")
             zombie.splice(i,1)
             if (player.collision == false){
                 newScore = newScore +1
                 score.innerHTML = newScore
-                explosionEffect(player.x+5,player.y+5,"rgb(144, 238, 144,0.6)",100)
+                explosionEffect(player.x+5,player.y+5,"rgb(144, 238, 144,0.6)",100,1,1)
             }
         }
     }
 
-    // particle
-    if (particleArray.length!=0){
-    handleParticle()
-    }
     gameFrame ++
     if (player.life <= 0){
         clearInterval(gameloop)
